@@ -42,7 +42,7 @@ pipeline:
                     account: "026885593597"
                     imageName: frontend
                     tags:
-                      - "1"
+                      - latest
                     caching: false
                     dockerfile: /harness/frontend/Dockerfile
                     context: /harness/frontend/
