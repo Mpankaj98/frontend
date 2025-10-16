@@ -1,0 +1,47 @@
+pipeline:
+  name: Pipeline
+  identifier: Pipeline
+  projectIdentifier: Second_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: git_connector
+        repoName: frontend
+        build: <+input>
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: false
+            override: true
+            paths: []
+          buildIntelligence:
+            enabled: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushECR
+                  name: BuildAndPushECR_1
+                  identifier: BuildAndPushECR_1
+                  spec:
+                    connectorRef: aws_connecter
+                    region: eu-west-3
+                    account: "026885593597"
+                    imageName: frontend
+                    tags:
+                      - "1"
+                    dockerfile: /harness/frontend/Dockerfile
+                    context: /harness/customer/
