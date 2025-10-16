@@ -43,5 +43,6 @@ pipeline:
                     imageName: frontend
                     tags:
                       - "1"
+                    caching: false
                     dockerfile: /harness/frontend/Dockerfile
-                    context: /harness/customer/
+                    context: /harness/frontend/
