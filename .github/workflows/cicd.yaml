@@ -62,4 +62,4 @@ jobs:
               ${{ secrets.DOCKERHUB_USERNAME }}/newfrontend:latest
 
             # Remove unused Docker images
-            docker image prune -f
+            docker image prune -a
