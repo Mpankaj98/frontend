@@ -25,12 +25,12 @@ jobs:
       # 3. Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest .
 
       # 4. Push image to Docker Hub
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
 
       # 5. Deploy image to EC2
       - name: Deploy to EC2
@@ -47,19 +47,19 @@ jobs:
               docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
             # Download latest image
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
 
             # Stop old container if it exists
-            docker stop myapp || true
+            docker stop frontend || true
 
             # Remove old container
-            docker rm myapp || true
+            docker rm frontend || true
 
             # Start new container
             docker run -d \
-              --name myapp \
-              -p 80:3000 \
-              ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+              --name frontend \
+              -p 5000:5000 \
+              ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
 
             # Remove unused Docker images
             docker image prune -f
