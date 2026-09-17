@@ -1,10 +1,10 @@
 pipeline {
     agent any   // or docker { image '...' } / label '...'
 
-    environment {
-        DOCKER_IMAGE = "yourusername/myapp"
+   // environment {
+       // DOCKER_IMAGE = "yourusername/myapp"
         // Add other env vars / credentials bindings here
-    }
+   // }
 
     stages {
         stage('Checkout') {
