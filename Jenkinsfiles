@@ -1,10 +1,10 @@
 pipeline {
     agent any   // or docker { image '...' } / label '...'
 
-   // environment {
-       // DOCKER_IMAGE = "yourusername/myapp"
-        // Add other env vars / credentials bindings here
-   // }
+  environment {
+        DOCKER_IMAGE = "yourusername/myapp"
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
 
     stages {
         stage('Checkout') {
@@ -60,7 +60,24 @@ pipeline {
                 }
             }
         }
-
+        
+      stage('Docker Login') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'docker-credentials',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
+                    sh '''
+                        echo "$DOCKER_PASSWORD" | \
+                        docker login -u "$DOCKER_USERNAME" --password-stdin
+                    '''
+                }
+            }
+        }
+        
         stage('Deploy to EC2') {
             steps {
                 sshagent(['ec2-ssh-key']) {   // Jenkins SSH credentials ID
